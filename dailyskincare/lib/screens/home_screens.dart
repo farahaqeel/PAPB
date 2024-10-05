@@ -1,10 +1,10 @@
+import 'package:dailyskincare/screens/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_appbar/calendar_appbar.dart';
 import 'package:dailyskincare/screens/todo_list.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
 // import 'package:motion_tab_bar/MotionTabItem.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   // State untuk MotionTabBarController
   MotionTabBarController? _motionTabBarController;
+  int _motionTabBarIndex = 0;
 
   @override
   void initState() {
@@ -142,44 +143,32 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         tabIconColor: Colors.purple,
         tabSelectedColor: Colors.purpleAccent,
         onTabItemSelected: (int index) {
-          // print(index);
-          _onItemTapped(index);
-          print(_motionTabBarController?.index);
-          // setState(() {
-          //   _motionTabBarController!.index = index;
-          // });
+          _motionTabBarIndex = index;
+          print(index);
+
+          _changeScreen(context, index);
         },
         icons: const [Icons.home, Icons.list, Icons.notifications],
         textStyle: const TextStyle(color: Colors.black),
       ),
     );
   }
+}
 
-  // Method untuk mengubah halaman berdasarkan index yang dipilih
-  void _onItemTapped(int index) {
-    print(index);
-    setState(() {
-      _motionTabBarController?.index = index;
-    });
-
-    // Navigasi ke halaman yang sesuai
-    // switch (index) {
-    //   case 0:
-    //     // Kembali ke Home
-    //     Navigator.push(context,
-    //      MaterialPageRoute(builder: (context) => const HomePage())
-    //      );
-    //     break;
-    //   case 1:
-    //     // Navigasi ke halaman To-Do List
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => ToDoListPage()),
-    //     );
-    //     break;
-    //   case 2:
-    //     // Tambahkan logika untuk Notifications jika diperlukan
-    //     break;
-    // }
+void _changeScreen(context, int _index) {
+  switch (_index) {
+    case 0:
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      break;
+    case 1:
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ToDoListPage()));
+      break;
+    case 2:
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NotificationPage()));
+      break;
+    default:
   }
 }
