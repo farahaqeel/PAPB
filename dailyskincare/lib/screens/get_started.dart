@@ -1,14 +1,19 @@
 import 'package:dailyskincare/screens/home_screens.dart';
+import 'package:dailyskincare/widget/bottom_nav_bar.dart';
+import 'package:dailyskincare/widget/motion_tab_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:motion_tab_bar/MotionTabBar.dart';
 
 void main() {
-  runApp(GetStarted());
+  runApp(const GetStarted());
 }
 
 class GetStarted extends StatelessWidget {
+  const GetStarted({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: GetStartedPage(),
     );
   }
@@ -21,10 +26,10 @@ class GetStartedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''), // Kosongkan title untuk AppBar atau tambahkan logo kecil jika diperlukan
+        title: const Text(''), // Kosongkan title untuk AppBar atau tambahkan logo kecil jika diperlukan
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // Membuat seluruh item berada di tengah secara vertikal
           crossAxisAlignment: CrossAxisAlignment.center, // Membuat item berada di tengah secara horizontal
@@ -33,8 +38,8 @@ class GetStartedPage extends StatelessWidget {
               'assets/logo.png',
               height: 80, // Sesuaikan ukuran gambar
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Welcome to Daily Skincare!',
               style: TextStyle(
                 fontSize: 24,
@@ -42,16 +47,16 @@ class GetStartedPage extends StatelessWidget {
               ),
               textAlign: TextAlign.center, // Menjaga agar teks berada di tengah
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Your personalized skincare routine starts here. Follow these steps to get started:',
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center, // Menjaga agar teks berada di tengah
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             // Modifikasi ListTile untuk di tengah
-            Align(
+            const Align(
               alignment: Alignment.center, // Memusatkan ListTile
               child: Row(
                 mainAxisSize: MainAxisSize.min, // Meminimalkan ukuran Row agar sesuai konten
@@ -62,8 +67,8 @@ class GetStartedPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            Align(
+            const SizedBox(height: 20),
+            const Align(
               alignment: Alignment.center, // Memusatkan ListTile
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -74,8 +79,8 @@ class GetStartedPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            Align(
+            const SizedBox(height: 20),
+            const Align(
               alignment: Alignment.center, // Memusatkan ListTile
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -87,14 +92,14 @@ class GetStartedPage extends StatelessWidget {
               ),
             ),
             
-            Spacer(),
+            const Spacer(),
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to next page
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => MotionTabBarPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

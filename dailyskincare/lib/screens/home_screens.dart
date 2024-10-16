@@ -1,52 +1,69 @@
-import 'package:dailyskincare/screens/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_appbar/calendar_appbar.dart';
-import 'package:dailyskincare/screens/todo_list.dart';
-import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
-// import 'package:motion_tab_bar/MotionTabItem.dart';
+import 'package:intl/intl.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// void main() {
+//   runApp(const MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       locale: const Locale('id', 'ID'), // Set the locale to Indonesian
+//       supportedLocales: const [Locale('en', 'US'), Locale('id', 'ID')], // Add Indonesian to supported locale
+//       home: const HomePage(),
+//     );
+//   }
+// }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  // State untuk menyimpan status checkbox
-  bool _cleanserChecked = false;
-  bool _moisturizerChecked = false;
-  bool _sunscreenChecked = false;
-  bool _serumChecked = false;
-
-  // State untuk MotionTabBarController
   MotionTabBarController? _motionTabBarController;
-  int _motionTabBarIndex = 0;
+
+  // Sample routine data with a 'checked' state
+  final List<Map<String, dynamic>> routines = [
+    {
+      'title': 'Cleanser - Pagi',
+      'time': DateTime.now().add(const Duration(hours: 1)),
+      'days': ['Monday', 'Wednesday', 'Friday'],
+      'checked': false, // Checkbox state
+    },
+    {
+      'title': 'Moisturizer - Pagi',
+      'time': DateTime.now().add(const Duration(hours: 2)),
+      'days': ['Monday', 'Tuesday'],
+      'checked': false,
+    },
+    {
+      'title': 'Sunscreen - Pagi',
+      'time': DateTime.now().add(const Duration(hours: 3)),
+      'days': ['Everyday'],
+      'checked': false,
+    },
+    {
+      'title': 'Serum - Malam',
+      'time': DateTime.now().add(const Duration(hours: 12)),
+      'days': ['Monday'],
+      'checked': false,
+    },
+  ];
 
   @override
   void initState() {
     super.initState();
-
-    // Use "MotionTabBarController" to programmatically change the tab
     _motionTabBarController = MotionTabBarController(
       initialIndex: 1,
-      length: 3, // Number of tabs
+      length: 3,
       vsync: this,
     );
   }
@@ -57,118 +74,117 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  // Helper function to format time to 24-hour format
+  String formatTime(DateTime time) {
+    return DateFormat('HH:mm', 'id_ID').format(time); // Format time in 24-hour format
+  }
+
+  // Function to map English day names to Indonesian
+  String convertToIndonesianDay(String day) {
+    switch (day.toLowerCase()) {
+      case 'monday':
+        return 'Senin';
+      case 'tuesday':
+        return 'Selasa';
+      case 'wednesday':
+        return 'Rabu';
+      case 'thursday':
+        return 'Kamis';
+      case 'friday':
+        return 'Jumat';
+      case 'saturday':
+        return 'Sabtu';
+      case 'sunday':
+        return 'Minggu';
+      case 'everyday':
+        return 'Setiap Hari';
+      default:
+        return day;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CalendarAppBar(
-        onDateChanged: (value) => print(value),
+        onDateChanged: (value) => (value),
         firstDate: DateTime.now().subtract(const Duration(days: 140)),
         lastDate: DateTime.now(),
         accent: const Color.fromARGB(255, 195, 3, 229),
         backButton: false,
+        locale: 'id_ID', // Set locale for CalendarAppBar
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Your Routine for Today',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: Checkbox(
-                        value: _cleanserChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _cleanserChecked = value ?? false;
-                          });
-                        },
-                      ),
-                      title: const Text('Cleanser - Morning'),
-                      subtitle: const Text('8:00 AM'),
-                    ),
-                    ListTile(
-                      leading: Checkbox(
-                        value: _moisturizerChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _moisturizerChecked = value ?? false;
-                          });
-                        },
-                      ),
-                      title: const Text('Moisturizer - Morning'),
-                      subtitle: const Text('8:15 AM'),
-                    ),
-                    ListTile(
-                      leading: Checkbox(
-                        value: _sunscreenChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _sunscreenChecked = value ?? false;
-                          });
-                        },
-                      ),
-                      title: const Text('Sunscreen - Morning'),
-                      subtitle: const Text('8:30 AM'),
-                    ),
-                    ListTile(
-                      leading: Checkbox(
-                        value: _serumChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _serumChecked = value ?? false;
-                          });
-                        },
-                      ),
-                      title: const Text('Serum - Night'),
-                      subtitle: const Text('9:00 PM'),
-                    ),
-                  ],
-                ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Adding the title "Rutinitas Saya" above the scrollable content
+          const Padding(
+            padding:  EdgeInsets.all(16.0),
+            child: Text(
+              'Rutinitas Saya',
+              style:  TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color:  Color.fromARGB(255, 195, 3, 229),
               ),
             ),
-          ],
-        ),
-      ),
-      // Implementasi MotionTabBar
-      bottomNavigationBar: MotionTabBar(
-        labels: const ['Home', 'To-Do List', 'Notifications'],
-        initialSelectedTab: 'Home',
-        tabIconColor: Colors.purple,
-        tabSelectedColor: Colors.purpleAccent,
-        onTabItemSelected: (int index) {
-          _motionTabBarIndex = index;
-          print(index);
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: routines.length,
+                    itemBuilder: (context, index) {
+                      final routine = routines[index];
+                      final remainingTime = routine['time'].difference(DateTime.now());
+                      
+                      // Convert days to Indonesian
+                      final daysInIndonesian = routine['days']
+                          .map<String>((day) => convertToIndonesianDay(day))
+                          .toList();
 
-          _changeScreen(context, index);
-        },
-        icons: const [Icons.home, Icons.list, Icons.notifications],
-        textStyle: const TextStyle(color: Colors.black),
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 246, 215, 252),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: ListTile(
+                          leading: Checkbox(
+                            value: routine['checked'],
+                            onChanged: (bool? value) {
+                              setState(() {
+                                routines[index]['checked'] = value ?? false;
+                              });
+                            },
+                          ),
+                          title: Text(routine['title']),
+                          subtitle: Text(
+                            'Hari: ${daysInIndonesian.join(", ")}\nWaktu: ${formatTime(routine['time'])} '
+                            '(${remainingTime.inMinutes} menit tersisa)',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
-  }
-}
-
-void _changeScreen(context, int _index) {
-  switch (_index) {
-    case 0:
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
-      break;
-    case 1:
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ToDoListPage()));
-      break;
-    case 2:
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NotificationPage()));
-      break;
-    default:
   }
 }
